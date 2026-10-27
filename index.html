@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="ca" class="dark">
+<html lang="ca">
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <meta charset="UTF-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Taula Periòdica i Model de Bohr</title>
   <!-- Tailwind CSS CDN -->
@@ -54,13 +55,22 @@
       width: 8px;
     }
     ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .dark ::-webkit-scrollbar-track {
       background: #0f172a;
     }
     ::-webkit-scrollbar-thumb {
-      background: #334155;
+      background: #cbd5e1;
       border-radius: 4px;
     }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
     ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .dark ::-webkit-scrollbar-thumb:hover {
       background: #475569;
     }
 
@@ -71,10 +81,18 @@
       z-index: 20;
     }
     .element-same-group {
+      background-color: rgba(56, 189, 248, 0.22) !important;
+      border-color: #0284c7 !important;
+    }
+    .dark .element-same-group {
       background-color: rgba(56, 189, 248, 0.18) !important;
       border-color: #38bdf8 !important;
     }
     .element-same-period {
+      background-color: rgba(250, 204, 21, 0.25) !important;
+      border-color: #d97706 !important;
+    }
+    .dark .element-same-period {
       background-color: rgba(250, 204, 21, 0.18) !important;
       border-color: #facc15 !important;
     }
@@ -89,38 +107,43 @@
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col antialiased">
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen font-sans flex flex-col antialiased transition-colors duration-200">
 
   <!-- HEADER -->
-  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-40 px-4 py-3 shadow-md">
+  <header class="border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur sticky top-0 z-40 px-4 py-3 shadow-md">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-cyan-500/20">
           B
         </div>
         <div>
-          <h1 class="text-lg md:text-xl font-bold tracking-tight text-white flex items-center gap-2">
+          <h1 class="text-lg md:text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             Taula Periòdica i Model de Bohr
-            <span class="text-xs font-normal px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800">Didàctica Química</span>
+            <span class="text-xs font-normal px-2 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-800">Didàctica Química</span>
           </h1>
-          <p class="text-xs text-slate-400">Model atòmic de Bohr interactiu, configuracions per capes i relacions de Grup i Període</p>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Model atòmic de Bohr interactiu, configuracions per capes i relacions de Grup i Període</p>
         </div>
       </div>
 
       <!-- SEARCH & CONTROLS -->
       <div class="flex items-center gap-2 w-full md:w-auto">
         <div class="relative flex-1 md:w-64">
-          <input type="text" id="searchInput" placeholder="Cerca element o símbol (ex: Na, Sodi, 11)..." 
-                 class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition">
-          <button id="clearSearch" class="hidden absolute right-2 top-1.5 text-slate-400 hover:text-white text-xs">✕</button>
+          <input type="text" id="searchInput" placeholder="Cerca element o símbol (ex: Na, Sodi, 11)..." class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition">
+          <button id="clearSearch" class="hidden absolute right-2 top-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-white text-xs">✕</button>
         </div>
 
-        <select id="speedSelect" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-cyan-500">
+        <select id="speedSelect" class="bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-cyan-500">
           <option value="12s">Velocitat: Normal</option>
           <option value="24s">Velocitat: Lenta</option>
           <option value="6s">Velocitat: Ràpida</option>
           <option value="paused">Rotació: Pausada</option>
         </select>
+
+        <!-- THEME TOGGLE BUTTON -->
+        <button id="themeToggle" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-medium hover:bg-slate-300 dark:hover:bg-slate-700 transition flex items-center gap-1.5 cursor-pointer">
+          <span id="themeToggleIcon">🌙</span>
+          <span id="themeToggleText">Mode Fosc</span>
+        </button>
       </div>
     </div>
   </header>
@@ -129,80 +152,72 @@
   <main class="max-w-[1400px] w-full mx-auto p-3 md:p-5 flex-1 flex flex-col gap-6">
 
     <!-- CATEGORY LEGEND BAR -->
-    <section class="bg-slate-900 border border-slate-800/80 rounded-xl p-3 shadow-sm">
+    <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-xl p-3 shadow-sm">
       <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-        <span class="font-semibold text-slate-400 uppercase tracking-wider text-[10px]">Famílies Químiques:</span>
-        <div class="flex flex-wrap gap-1.5" id="legendContainer">
-          <!-- Filled dynamically -->
-        </div>
+        <span class="font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">Famílies Químiques:</span>
+        <div class="flex flex-wrap gap-1.5" id="legendContainer"></div>
       </div>
     </section>
 
     <!-- TRADITIONAL 18-COLUMN PERIODIC TABLE GRID -->
-    <section class="bg-slate-900/60 border border-slate-800/80 rounded-xl p-3 md:p-4 shadow-xl overflow-x-auto relative">
+    <section class="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-xl p-3 md:p-4 shadow-xl overflow-x-auto relative">
       <div class="flex items-center justify-between mb-2">
-        <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+        <h2 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-2">
           <span>Disposició Tradicional de 18 Columnes</span>
           <span class="text-[11px] font-normal text-slate-500">(Fes clic a qualsevol element per explorar el seu model de Bohr)</span>
         </h2>
-        <div class="flex items-center gap-3 text-[11px] text-slate-400">
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block"></span> Mateix Grup</span>
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> Mateix Període</span>
+        <div class="flex items-center gap-3 text-[11px] text-slate-600 dark:text-slate-400">
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500 inline-block"></span> Mateix Grup</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Mateix Període</span>
         </div>
       </div>
 
       <!-- Grid Wrapper with minimum width to avoid vertical distortion -->
       <div class="min-w-[1000px]">
         <!-- MAIN GRID (18 COLUMNS x 7 ROWS) -->
-        <div id="periodicGrid" class="grid-cols-18 gap-1 md:gap-1.5">
-          <!-- Elements Z=1 to 118 placed via JS -->
-        </div>
+        <div id="periodicGrid" class="grid-cols-18 gap-1 md:gap-1.5"></div>
 
         <!-- SPACER & F-BLOCK HEADER -->
         <div class="mt-4 mb-2 flex items-center gap-2">
-          <div class="h-px bg-slate-800 flex-1"></div>
-          <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider px-2">Bloc f (Lantanoides i Actinoides)</span>
-          <div class="h-px bg-slate-800 flex-1"></div>
+          <div class="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+          <span class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider px-2">Bloc f (Lantanoides i Actinoides)</span>
+          <div class="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
         </div>
 
-        <!-- F-BLOCK GRID (2 ROWS OF 15 ELEMENTS ALIGNED UNDER COLUMNS 3-17) -->
-        <div id="fBlockGrid" class="grid-cols-18 gap-1 md:gap-1.5">
-          <!-- Lanthanides & Actinides placed via JS -->
-        </div>
+        <!-- F-BLOCK GRID -->
+        <div id="fBlockGrid" class="grid-cols-18 gap-1 md:gap-1.5"></div>
       </div>
     </section>
 
     <!-- DIDACTIC INTERACTIVE PANEL -->
-    <section id="didacticPanel" class="bg-slate-900 border border-slate-800 rounded-xl shadow-2xl overflow-hidden transition-all duration-300">
+    <section id="didacticPanel" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl overflow-hidden transition-all duration-300">
       
       <!-- HEADER OF SELECTED ELEMENT -->
-      <div class="bg-slate-800/80 border-b border-slate-700/60 p-4 flex flex-wrap items-center justify-between gap-4">
+      <div class="bg-slate-100 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700/60 p-4 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-          <div id="selectedTileBadge" class="w-14 h-14 rounded-xl flex flex-col items-center justify-center font-bold text-slate-950 shadow-md border border-white/20">
-            <!-- Dynamic -->
-          </div>
+          <div id="selectedTileBadge" class="w-14 h-14 rounded-xl flex flex-col items-center justify-center font-bold text-slate-950 shadow-md border border-white/20"></div>
           <div>
             <div class="flex items-center gap-2">
-              <h3 id="selectedElementName" class="text-xl font-bold text-white">Sodi</h3>
-              <span id="selectedElementSymbol" class="text-sm font-semibold text-slate-400">(Na)</span>
-              <span id="selectedCategoryPill" class="text-xs px-2 py-0.5 rounded-full font-medium border">Alcalins</span>
+              <h3 id="selectedElementName" class="text-xl font-bold text-slate-900 dark:text-white"></h3>
+              <span id="selectedElementSymbol" class="text-sm font-semibold text-slate-500 dark:text-slate-400"></span>
+              <span id="selectedCategoryPill" class="text-xs px-2 py-0.5 rounded-full font-medium border"></span>
             </div>
-            <p id="selectedDetailsSub" class="text-xs text-slate-400 mt-0.5">
-              Nombre atòmic (Z): <strong id="selectedZ" class="text-slate-200">11</strong> | Massa atòmica: <strong id="selectedMass" class="text-slate-200">22.990</strong> u | Grup: <strong id="selectedGroup" class="text-slate-200">1</strong> | Període: <strong id="selectedPeriod" class="text-slate-200">3</strong>
+            <p id="selectedDetailsSub" class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+              Nombre atòmic (Z): <strong id="selectedZ" class="text-slate-800 dark:text-slate-200"></strong> | Massa atòmica: <strong id="selectedMass" class="text-slate-800 dark:text-slate-200"></strong> u | Grup: <strong id="selectedGroup" class="text-slate-800 dark:text-slate-200"></strong> | Període: <strong id="selectedPeriod" class="text-slate-800 dark:text-slate-200"></strong>
             </p>
           </div>
         </div>
 
         <!-- PANEL TABS -->
-        <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
-          <button id="tabDetailBtn" class="px-3 py-1.5 rounded-md font-medium text-white bg-slate-800 shadow transition">
-            ⚛️ Detall & Bohr
+        <div class="flex items-center gap-1 bg-slate-200/80 dark:bg-slate-950 p-1 rounded-lg border border-slate-300 dark:border-slate-800 text-xs">
+          <button id="tabDetailBtn" class="px-3 py-1.5 rounded-md font-medium transition">
+            ⚛️ Detall &amp; Bohr
           </button>
-          <button id="tabGroupBtn" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition">
-            ↕️ Mateix Grup (<span id="tabGroupCount">7</span>)
+          <button id="tabGroupBtn" class="px-3 py-1.5 rounded-md font-medium transition">
+            ↕️ Mateix Grup (<span id="tabGroupCount">0</span>)
           </button>
-          <button id="tabPeriodBtn" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition">
-            ↔️ Mateix Període (<span id="tabPeriodCount">8</span>)
+          <button id="tabPeriodBtn" class="px-3 py-1.5 rounded-md font-medium transition">
+            ↔️ Mateix Període (<span id="tabPeriodCount">0</span>)
           </button>
         </div>
       </div>
@@ -213,23 +228,21 @@
         <!-- SECTION 1: DETAILED VIEW & BOHR ATOM -->
         <div id="tabDetailContent" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           
-          <!-- BOHR ATOM GRAPHIC (Interactive SVG) -->
-          <div class="lg:col-span-6 flex flex-col items-center justify-center bg-slate-950/60 rounded-xl p-4 border border-slate-800 relative">
-            <div class="absolute top-3 left-3 text-[11px] font-semibold text-slate-400 bg-slate-900/80 px-2.5 py-1 rounded-md border border-slate-800">
+          <!-- BOHR ATOM GRAPHIC -->
+          <div class="lg:col-span-6 flex flex-col items-center justify-center bg-slate-100/70 dark:bg-slate-950/60 rounded-xl p-4 border border-slate-200 dark:border-slate-800 relative">
+            <div class="absolute top-3 left-3 text-[11px] font-semibold text-slate-600 dark:text-slate-400 bg-white/90 dark:bg-slate-900/80 px-2.5 py-1 rounded-md border border-slate-200 dark:border-slate-800">
               Model Atòmic de Bohr (Comptable 1 a 1)
             </div>
             
-            <div id="bohrMainGraphic" class="w-full max-w-[340px] aspect-square my-2">
-              <!-- SVG Bohr Model rendered here -->
-            </div>
+            <div id="bohrMainGraphic" class="w-full max-w-[340px] aspect-square my-2"></div>
 
             <!-- BOHR SUMMARY BADGE -->
             <div class="flex flex-wrap items-center justify-center gap-2 mt-2 text-xs">
-              <span class="px-3 py-1 rounded-lg bg-blue-950 text-blue-300 border border-blue-800/60 font-mono">
-                Capes Ocupades (n): <strong id="bohrShellCount" class="text-white">3</strong>
+              <span class="px-3 py-1 rounded-lg bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/60 font-mono">
+                Capes Ocupades (n): <strong id="bohrShellCount" class="text-slate-900 dark:text-white"></strong>
               </span>
-              <span class="px-3 py-1 rounded-lg bg-red-950 text-red-300 border border-red-800/60 font-mono">
-                Electrons de València: <strong id="bohrValenceCount" class="text-white">1</strong> (Girant)
+              <span class="px-3 py-1 rounded-lg bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/60 font-mono">
+                Electrons de València: <strong id="bohrValenceCount" class="text-slate-900 dark:text-white"></strong> (Girant)
               </span>
             </div>
           </div>
@@ -238,72 +251,62 @@
           <div class="lg:col-span-6 flex flex-col gap-4">
             
             <!-- SHELL DISTRIBUTION BREAKDOWN -->
-            <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800">
-              <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center justify-between">
+            <div class="bg-slate-50 dark:bg-slate-950/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+              <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2 flex items-center justify-between">
                 <span>Distribució d'Electrons per Capes</span>
-                <span id="shellArrayText" class="text-cyan-400 font-mono text-sm">2, 8, 1</span>
+                <span id="shellArrayText" class="text-cyan-600 dark:text-cyan-400 font-mono text-sm"></span>
               </h4>
-              <div id="shellBadgesContainer" class="flex flex-wrap gap-2">
-                <!-- Badges for K, L, M, N... -->
-              </div>
+              <div id="shellBadgesContainer" class="flex flex-wrap gap-2"></div>
             </div>
 
             <!-- AUFBAU CONFIGURATION -->
-            <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800">
-              <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+            <div class="bg-slate-50 dark:bg-slate-950/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+              <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                 Configuració Electrònica d'Aufbau (Teòrica)
               </h4>
-              <p id="aufbauText" class="font-mono text-sm text-cyan-300 bg-slate-900 p-2.5 rounded-lg border border-slate-800 break-all">
-                1s² 2s² 2p⁶ 3s¹
-              </p>
+              <p id="aufbauText" class="font-mono text-sm text-cyan-700 dark:text-cyan-300 bg-slate-100 dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 break-all"></p>
             </div>
 
-            <!-- REAL EXCEPTION ALERT (IF APPLICABLE) -->
-            <div id="exceptionBanner" class="hidden bg-amber-950/40 border border-amber-700/60 rounded-xl p-3 text-xs text-amber-200 flex items-start gap-2.5">
+            <!-- REAL EXCEPTION ALERT -->
+            <div id="exceptionBanner" class="hidden bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700/60 rounded-xl p-3 text-xs text-amber-800 dark:text-amber-200 flex items-start gap-2.5">
               <span class="text-base">⚠️</span>
               <div>
-                <strong class="font-semibold block text-amber-300 mb-0.5">Excepció d'Estat Fonamental Real:</strong>
-                <p id="exceptionText" class="text-amber-200/90 leading-relaxed"></p>
+                <strong class="font-semibold block text-amber-900 dark:text-amber-300 mb-0.5">Excepció d'Estat Fonamental Real:</strong>
+                <p id="exceptionText" class="text-amber-800 dark:text-amber-200/90 leading-relaxed"></p>
               </div>
             </div>
 
             <!-- DIDACTIC EXPLANATION -->
-            <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-700/50 text-xs text-slate-300 leading-relaxed">
-              💡 <strong class="text-white">Clau Didàctica:</strong>
-              <span id="didacticSummaryText">
-                El Sodi té 1 electró a la seva capa exterior (capa de valència). Per això pertany al Grup 1 i té tendència a cedir aquest electró per formar el catió Na⁺ amb estructura de gas noble.
-              </span>
+            <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/50 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+              💡 <strong class="text-slate-900 dark:text-white">Clau Didàctica:</strong>
+              <span id="didacticSummaryText"></span>
             </div>
 
           </div>
         </div>
 
-        <!-- SECTION 2: SAME GROUP GALLERY (VERTICAL DISPLAY) -->
+        <!-- SECTION 2: SAME GROUP GALLERY -->
         <div id="tabGroupContent" class="hidden">
-          <div class="mb-4 bg-slate-950/50 p-3.5 rounded-xl border border-slate-800 flex items-start gap-2.5 text-xs text-slate-300">
-            <span class="text-cyan-400 text-base">↕️</span>
+          <div class="mb-4 bg-slate-100 dark:bg-slate-950/50 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-300">
+            <span class="text-cyan-600 dark:text-cyan-400 text-base">↕️</span>
             <div>
-              <strong class="text-cyan-300">Regla del Grup (Columna - Disposició Vertical):</strong> TOTS els elements d'una mateixa columna (grup) es mostren organitzats de dalt a baix (del període superior a l'inferior). Tots tenen el <strong class="text-white">MATEIX NOMBRE D'ELECTRONS A LA CAPA DE VALÈNCIA</strong> (destacats en vermell i en rotació contínua).
+              <strong class="text-cyan-700 dark:text-cyan-300">Regla del Grup (Columna - Disposició Vertical):</strong> TOTS els elements d'una mateixa columna (grup) es mostren organitzats de dalt a baix (del període superior a l'inferior). Tots tenen el <strong class="text-slate-900 dark:text-white">MATEIX NOMBRE D'ELECTRONS A LA CAPA DE VALÈNCIA</strong> (destacats en vermell i en rotació contínua).
             </div>
           </div>
           
-          <div id="groupGalleryContainer" class="flex flex-col items-center gap-3 py-2 px-1 max-w-2xl mx-auto">
-            <!-- Dynamic Vertical Bohr Cards for Group -->
-          </div>
+          <div id="groupGalleryContainer" class="flex flex-col items-center gap-3 py-2 px-1 max-w-2xl mx-auto"></div>
         </div>
 
-        <!-- SECTION 3: SAME PERIOD GALLERY (HORIZONTAL DISPLAY) -->
+        <!-- SECTION 3: SAME PERIOD GALLERY -->
         <div id="tabPeriodContent" class="hidden">
-          <div class="mb-3 bg-slate-950/50 p-3 rounded-lg border border-slate-800 flex items-start gap-2 text-xs text-slate-300">
-            <span class="text-amber-400 text-base">↔️</span>
+          <div class="mb-3 bg-slate-100 dark:bg-slate-950/50 p-3 rounded-lg border border-slate-200 dark:border-slate-800 flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300">
+            <span class="text-amber-500 text-base">↔️</span>
             <div>
-              <strong class="text-amber-300">Regla del Període (Fila - Disposició Horitzontal):</strong> TOTS els elements d'una mateixa fila tenen el <strong class="text-white">MATEIX NOMBRE DE CAPES ELECTRÒNIQUES OCUPADES (n)</strong>. En avançar d'esquerra a dreta, s'afegeix 1 electró a la capa exterior.
+              <strong class="text-amber-600 dark:text-amber-300">Regla del Període (Fila - Disposició Horitzontal):</strong> TOTS els elements d'una mateixa fila tenen el <strong class="text-slate-900 dark:text-white">MATEIX NOMBRE DE CAPES ELECTRÒNIQUES OCUPADES (n)</strong>. En avançar d'esquerra a dreta, s'afegeix 1 electró a la capa exterior.
             </div>
           </div>
 
-          <div id="periodGalleryContainer" class="flex gap-4 overflow-x-auto pb-4 pt-2 px-1">
-            <!-- Dynamic Bohr Cards for Period -->
-          </div>
+          <div id="periodGalleryContainer" class="flex gap-4 overflow-x-auto pb-4 pt-2 px-1"></div>
         </div>
 
       </div>
@@ -312,7 +315,7 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-slate-800 bg-slate-900/60 py-4 text-center text-xs text-slate-500 mt-auto">
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 py-4 text-center text-xs text-slate-500 mt-auto">
     Taula Periòdica i Model Atòmic de Bohr — Recurs Educatiu per a Física i Química de Secundària i Batxillerat
   </footer>
 
@@ -322,16 +325,16 @@
        1. DATA DEFINITION FOR ALL 118 ELEMENTS
        ========================================================================== */
     const CATEGORIES = {
-      alkali: { name: "Alcalins", color: "bg-red-500/20 text-red-300 border-red-500/50", tileBg: "#ef4444" },
-      alkaline: { name: "Alcalinoterris", color: "bg-orange-500/20 text-orange-300 border-orange-500/50", tileBg: "#f97316" },
-      transition: { name: "Metalls de Transició", color: "bg-amber-500/20 text-amber-300 border-amber-500/50", tileBg: "#eab308" },
-      posttrans: { name: "Metalls Bloc p", color: "bg-indigo-500/20 text-indigo-300 border-indigo-500/50", tileBg: "#6366f1" },
-      metalloid: { name: "Metal·loides", color: "bg-teal-500/20 text-teal-300 border-teal-500/50", tileBg: "#14b8a6" },
-      nonmetal: { name: "No-metalls", color: "bg-green-500/20 text-green-300 border-green-500/50", tileBg: "#22c55e" },
-      halogen: { name: "Halògens", color: "bg-sky-500/20 text-sky-300 border-sky-500/50", tileBg: "#06b6d4" },
-      noble: { name: "Gasos Nobles", color: "bg-purple-500/20 text-purple-300 border-purple-500/50", tileBg: "#a855f7" },
-      lanthanide: { name: "Lantanoides", color: "bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/50", tileBg: "#d946ef" },
-      actinide: { name: "Actinoides", color: "bg-rose-500/20 text-rose-300 border-rose-500/50", tileBg: "#f43f5e" }
+      alkali: { name: "Alcalins", color: "bg-red-500/10 dark:bg-red-500/20 text-red-700 dark:text-red-300 border-red-500/30 dark:border-red-500/50", tileBg: "#ef4444" },
+      alkaline: { name: "Alcalinoterris", color: "bg-orange-500/10 dark:bg-orange-500/20 text-orange-800 dark:text-orange-300 border-orange-500/30 dark:border-orange-500/50", tileBg: "#f97316" },
+      transition: { name: "Metalls de Transició", color: "bg-amber-500/10 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-500/30 dark:border-amber-500/50", tileBg: "#eab308" },
+      posttrans: { name: "Metalls Bloc p", color: "bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border-indigo-500/30 dark:border-indigo-500/50", tileBg: "#6366f1" },
+      metalloid: { name: "Metal·loides", color: "bg-teal-500/10 dark:bg-teal-500/20 text-teal-800 dark:text-teal-300 border-teal-500/30 dark:border-teal-500/50", tileBg: "#14b8a6" },
+      nonmetal: { name: "No-metalls", color: "bg-green-500/10 dark:bg-green-500/20 text-green-800 dark:text-green-300 border-green-500/30 dark:border-green-500/50", tileBg: "#22c55e" },
+      halogen: { name: "Halògens", color: "bg-sky-500/10 dark:bg-sky-500/20 text-sky-800 dark:text-sky-300 border-sky-500/30 dark:border-sky-500/50", tileBg: "#06b6d4" },
+      noble: { name: "Gasos Nobles", color: "bg-purple-500/10 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border-purple-500/30 dark:border-purple-500/50", tileBg: "#a855f7" },
+      lanthanide: { name: "Lantanoides", color: "bg-fuchsia-500/10 dark:bg-fuchsia-500/20 text-fuchsia-700 dark:text-fuchsia-300 border-fuchsia-500/30 dark:border-fuchsia-500/50", tileBg: "#d946ef" },
+      actinide: { name: "Actinoides", color: "bg-rose-500/10 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 border-rose-500/30 dark:border-rose-500/50", tileBg: "#f43f5e" }
     };
 
     const elementsData = [
@@ -579,7 +582,7 @@
         const isValence = (sIdx === numShells - 1);
 
         // Orbit Line
-        const orbitStroke = isValence ? 'rgba(239, 68, 68, 0.45)' : 'rgba(148, 163, 184, 0.3)';
+        const orbitStroke = isValence ? 'rgba(239, 68, 68, 0.45)' : 'rgba(100, 116, 139, 0.4)';
         const orbitWidth = isValence ? 1.8 : 1.2;
         const dashArray = isValence ? 'none' : '4,3';
 
@@ -587,7 +590,7 @@
 
         // Shell Label n=1, n=2...
         if (options.showLabels !== false) {
-          svg += `<text x="${cx + 4}" y="${cy - r + 9}" fill="rgba(148, 163, 184, 0.6)" font-size="8" font-family="monospace">n=${n}</text>`;
+          svg += `<text x="${cx + 4}" y="${cy - r + 9}" fill="rgba(100, 116, 139, 0.7)" font-size="8" font-family="monospace">n=${n}</text>`;
         }
 
         // Electrons Group
@@ -649,6 +652,7 @@
       renderPeriodicTable();
       setupEventListeners();
       selectElement(selectedZ);
+      switchTab('detail');
     }
 
     /* Render Chemical Families Legend */
@@ -657,7 +661,7 @@
       
       // All button
       const allBtn = document.createElement('button');
-      allBtn.className = `px-2 py-1 rounded text-[11px] font-medium border transition ${currentFilter === 'all' ? 'bg-cyan-500 text-slate-950 border-cyan-400 font-bold' : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'}`;
+      allBtn.className = `px-2 py-1 rounded text-[11px] font-medium border transition ${currentFilter === 'all' ? 'bg-cyan-500 text-slate-950 border-cyan-400 font-bold' : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-300 dark:hover:bg-slate-700'}`;
       allBtn.textContent = "Tots";
       allBtn.onclick = () => filterCategory('all');
       legendContainer.appendChild(allBtn);
@@ -665,7 +669,7 @@
       Object.entries(CATEGORIES).forEach(([key, cat]) => {
         const btn = document.createElement('button');
         const isActive = currentFilter === key;
-        btn.className = `px-2 py-1 rounded text-[11px] font-medium border transition ${isActive ? 'bg-white text-slate-950 font-bold border-white' : cat.color + ' hover:opacity-80'}`;
+        btn.className = `px-2 py-1 rounded text-[11px] font-medium border transition ${isActive ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 font-bold border-slate-900 dark:border-white' : cat.color + ' hover:opacity-80'}`;
         btn.textContent = cat.name;
         btn.onclick = () => filterCategory(key);
         legendContainer.appendChild(btn);
@@ -687,15 +691,12 @@
         const tile = createTileElement(elem);
 
         if (elem.fBlock) {
-          // f-Block elements go to fBlockGrid
-          // Lanthanides (57-71) in fRow 1, Actinides (89-103) in fRow 2
           const col = elem.z <= 71 ? (elem.z - 57 + 3) : (elem.z - 89 + 3);
           const row = elem.z <= 71 ? 1 : 2;
           tile.style.gridColumn = col;
           tile.style.gridRow = row;
           fBlockGrid.appendChild(tile);
         } else {
-          // Main grid elements
           tile.style.gridColumn = elem.group;
           tile.style.gridRow = elem.period;
           periodicGrid.appendChild(tile);
@@ -711,14 +712,14 @@
 
     function createPlaceholderTile(zRange, symbol, name, catKey, col, row) {
       const div = document.createElement('div');
-      div.className = `border border-dashed border-slate-700 rounded-lg p-1 flex flex-col items-center justify-center text-center cursor-pointer hover:border-cyan-400 transition min-h-[54px] bg-slate-900/40`;
+      div.className = `border border-dashed border-slate-300 dark:border-slate-700 rounded-lg p-1 flex flex-col items-center justify-center text-center cursor-pointer hover:border-cyan-400 transition min-h-[54px] bg-slate-50 dark:bg-slate-900/40`;
       div.style.gridColumn = col;
       div.style.gridRow = row;
 
       div.innerHTML = `
         <span class="text-[9px] text-slate-500 font-mono">${zRange}</span>
-        <strong class="text-xs font-bold text-slate-300">${symbol}</strong>
-        <span class="text-[8px] text-slate-400 truncate w-full">${name}</span>
+        <strong class="text-xs font-bold text-slate-700 dark:text-slate-300">${symbol}</strong>
+        <span class="text-[8px] text-slate-500 dark:text-slate-400 truncate w-full">${name}</span>
       `;
       div.onclick = () => {
         const targetZ = zRange === "57-71" ? 57 : 89;
@@ -735,18 +736,18 @@
       const div = document.createElement('div');
       div.id = `tile-${elem.z}`;
       div.dataset.z = elem.z;
-      div.className = `element-tile border border-slate-800 rounded-lg p-1 flex flex-col justify-between cursor-pointer transition-all duration-150 min-h-[56px] select-none relative group hover:z-30 hover:scale-105 hover:border-slate-400 bg-slate-900/90`;
+      div.className = `element-tile border border-slate-200 dark:border-slate-800 rounded-lg p-1 flex flex-col justify-between cursor-pointer transition-all duration-150 min-h-[56px] select-none relative group hover:z-30 hover:scale-105 hover:border-slate-400 bg-white dark:bg-slate-900/90`;
 
       div.innerHTML = `
-        <div class="flex items-center justify-between w-full text-[9px] leading-none font-mono text-slate-400">
+        <div class="flex items-center justify-between w-full text-[9px] leading-none font-mono text-slate-500 dark:text-slate-400">
           <span>${elem.z}</span>
           <span class="w-1.5 h-1.5 rounded-full" style="background-color:${cat.tileBg}"></span>
         </div>
         <div class="text-center my-0.5">
-          <strong class="text-sm font-black text-slate-100 tracking-tight block leading-none">${elem.symbol}</strong>
-          <span class="text-[9px] text-slate-400 block truncate font-medium leading-tight mt-0.5">${elem.name}</span>
+          <strong class="text-sm font-black text-slate-900 dark:text-slate-100 tracking-tight block leading-none">${elem.symbol}</strong>
+          <span class="text-[9px] text-slate-600 dark:text-slate-400 block truncate font-medium leading-tight mt-0.5">${elem.name}</span>
         </div>
-        <div class="text-[8px] font-mono text-slate-500 text-center leading-none truncate border-t border-slate-800/60 pt-0.5">
+        <div class="text-[8px] font-mono text-slate-500 text-center leading-none truncate border-t border-slate-200 dark:border-slate-800/60 pt-0.5">
           ${shellStr}
         </div>
       `;
@@ -801,9 +802,9 @@
       const shellNames = ['K (n=1)', 'L (n=2)', 'M (n=3)', 'N (n=4)', 'O (n=5)', 'P (n=6)', 'Q (n=7)'];
       const shellBadges = document.getElementById('shellBadgesContainer');
       shellBadges.innerHTML = shells.map((count, idx) => `
-        <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg text-xs">
-          <span class="text-slate-400 font-mono">${shellNames[idx]}:</span>
-          <strong class="${idx === shells.length - 1 ? 'text-red-400 font-bold' : 'text-cyan-300'}">${count} e⁻</strong>
+        <div class="flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-2.5 py-1 rounded-lg text-xs">
+          <span class="text-slate-500 dark:text-slate-400 font-mono">${shellNames[idx]}:</span>
+          <strong class="${idx === shells.length - 1 ? 'text-red-600 dark:text-red-400 font-bold' : 'text-cyan-700 dark:text-cyan-300'}">${count} e⁻</strong>
         </div>
       `).join('');
 
@@ -884,12 +885,11 @@
       });
     }
 
-    /* Populate Same Group Gallery (VERTICAL STACK DEPLOYMENT) */
+    /* Populate Same Group Gallery */
     function updateGroupGallery(selectedElem) {
       const groupGallery = document.getElementById('groupGalleryContainer');
       groupGallery.innerHTML = '';
 
-      // Find all elements in same group (or same f-block category)
       let groupMembers = [];
       if (selectedElem.fBlock) {
         groupMembers = elementsData.filter(e => e.category === selectedElem.category);
@@ -897,7 +897,6 @@
         groupMembers = elementsData.filter(e => e.group === selectedElem.group && !e.fBlock);
       }
 
-      // Sort by period ascending (1 to 7) for true top-to-bottom column order
       groupMembers.sort((a, b) => a.period - b.period);
 
       document.getElementById('tabGroupCount').textContent = groupMembers.length;
@@ -907,31 +906,30 @@
         const valElectrons = shells[shells.length - 1];
         const isCurrent = elem.z === selectedElem.z;
 
-        // Visual Downward Connector Line between period elements
         if (index > 0) {
           const connector = document.createElement('div');
-          connector.className = 'flex flex-col items-center my-0.5 text-cyan-400/80 font-mono text-xs select-none';
+          connector.className = 'flex flex-col items-center my-0.5 text-cyan-500 font-mono text-xs select-none';
           connector.innerHTML = `
             <div class="w-0.5 h-3 bg-gradient-to-b from-cyan-500/60 to-cyan-400"></div>
-            <span class="text-[10px] leading-none text-cyan-400">↓</span>
+            <span class="text-[10px] leading-none text-cyan-500">↓</span>
           `;
           groupGallery.appendChild(connector);
         }
 
         const card = document.createElement('div');
-        card.className = `w-full bg-slate-950 border ${isCurrent ? 'border-cyan-400 ring-2 ring-cyan-500/40 shadow-cyan-950/50' : 'border-slate-800 hover:border-slate-600'} rounded-xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-4 cursor-pointer transition shadow-xl hover:bg-slate-900/60`;
+        card.className = `w-full bg-white dark:bg-slate-950 border ${isCurrent ? 'border-cyan-500 ring-2 ring-cyan-500/40 shadow-cyan-500/10' : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600'} rounded-xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-4 cursor-pointer transition shadow-sm dark:shadow-xl hover:bg-slate-50 dark:hover:bg-slate-900/60`;
         
         card.innerHTML = `
           <!-- Left Info Badge -->
           <div class="flex items-center gap-3 sm:w-1/3 min-w-[140px]">
-            <div class="w-12 h-12 rounded-lg bg-slate-900 border border-slate-700 flex flex-col items-center justify-center text-center font-mono">
-              <span class="text-[9px] text-slate-400">Període ${elem.period}</span>
-              <strong class="text-base text-white leading-none font-bold">${elem.symbol}</strong>
-              <span class="text-[9px] text-cyan-400">Z = ${elem.z}</span>
+            <div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center text-center font-mono">
+              <span class="text-[9px] text-slate-500 dark:text-slate-400">Període ${elem.period}</span>
+              <strong class="text-base text-slate-900 dark:text-white leading-none font-bold">${elem.symbol}</strong>
+              <span class="text-[9px] text-cyan-600 dark:text-cyan-400">Z = ${elem.z}</span>
             </div>
             <div>
-              <strong class="text-sm text-slate-100 font-semibold block">${elem.name}</strong>
-              <span class="text-[11px] text-slate-400 font-mono">${shells.length} capes ocupades</span>
+              <strong class="text-sm text-slate-800 dark:text-slate-100 font-semibold block">${elem.name}</strong>
+              <span class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">${shells.length} capes ocupades</span>
             </div>
           </div>
 
@@ -942,10 +940,10 @@
 
           <!-- Right Details -->
           <div class="flex flex-col items-center sm:items-end sm:w-1/3 gap-1.5 text-xs text-right">
-            <span class="inline-block px-3 py-1 rounded-full font-semibold bg-red-950/80 text-red-300 border border-red-800/80 font-mono shadow-sm">
+            <span class="inline-block px-3 py-1 rounded-full font-semibold bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-300 border border-red-300 dark:border-red-800/80 font-mono shadow-sm">
               ${valElectrons} e⁻ de valència
             </span>
-            <div class="text-[11px] text-slate-400 font-mono bg-slate-900/80 px-2.5 py-1 rounded-md border border-slate-800">
+            <div class="text-[11px] text-slate-600 dark:text-slate-400 font-mono bg-slate-100 dark:bg-slate-900/80 px-2.5 py-1 rounded-md border border-slate-200 dark:border-slate-800">
               Capes: ${shells.join(', ')}
             </div>
           </div>
@@ -956,7 +954,7 @@
       });
     }
 
-    /* Populate Same Period Gallery (HORIZONTAL DISPLAY) */
+    /* Populate Same Period Gallery */
     function updatePeriodGallery(selectedElem) {
       const periodGallery = document.getElementById('periodGalleryContainer');
       periodGallery.innerHTML = '';
@@ -969,19 +967,19 @@
         const isCurrent = elem.z === selectedElem.z;
 
         const card = document.createElement('div');
-        card.className = `flex-shrink-0 w-48 bg-slate-950 border ${isCurrent ? 'border-amber-400 ring-2 ring-amber-500/30' : 'border-slate-800 hover:border-slate-600'} rounded-xl p-3 flex flex-col items-center cursor-pointer transition shadow-lg`;
+        card.className = `flex-shrink-0 w-48 bg-white dark:bg-slate-950 border ${isCurrent ? 'border-amber-500 ring-2 ring-amber-500/30' : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600'} rounded-xl p-3 flex flex-col items-center cursor-pointer transition shadow-sm dark:shadow-lg`;
         
         card.innerHTML = `
-          <div class="flex items-center justify-between w-full text-xs font-semibold text-slate-400 mb-1">
+          <div class="flex items-center justify-between w-full text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">
             <span>Z=${elem.z}</span>
-            <strong class="text-white">${elem.symbol}</strong>
+            <strong class="text-slate-900 dark:text-white">${elem.symbol}</strong>
             <span class="text-[10px]">${elem.name}</span>
           </div>
           <div class="w-36 h-36 my-1">
             ${renderBohrSVG(elem, { showLabels: false, idPrefix: `period-${elem.z}` })}
           </div>
           <div class="mt-2 w-full text-center">
-            <span class="inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold bg-blue-950 text-blue-300 border border-blue-800">
+            <span class="inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
               ${shells.length} capes (n = ${shells.length})
             </span>
           </div>
@@ -993,7 +991,7 @@
     }
 
     /* ==========================================================================
-       5. EVENT LISTENERS & SEARCH
+       5. EVENT LISTENERS & THEME TOGGLE
        ========================================================================== */
     function setupEventListeners() {
       // Tab Navigation
@@ -1025,14 +1023,30 @@
           document.querySelectorAll('.valence-spin').forEach(el => el.classList.remove('valence-spin-paused'));
         }
       };
+
+      // Dark / Light Theme Toggle Button
+      const themeToggle = document.getElementById('themeToggle');
+      const themeToggleIcon = document.getElementById('themeToggleIcon');
+      const themeToggleText = document.getElementById('themeToggleText');
+
+      themeToggle.onclick = () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        if (isDark) {
+          themeToggleIcon.textContent = '☀️';
+          themeToggleText.textContent = 'Mode Lluminós';
+        } else {
+          themeToggleIcon.textContent = '🌙';
+          themeToggleText.textContent = 'Mode Fosc';
+        }
+      };
     }
 
     function switchTab(tabKey) {
       activeTab = tabKey;
 
-      tabDetailBtn.className = `px-3 py-1.5 rounded-md font-medium transition ${tabKey === 'detail' ? 'text-white bg-slate-800 shadow' : 'text-slate-400 hover:text-white'}`;
-      tabGroupBtn.className = `px-3 py-1.5 rounded-md font-medium transition ${tabKey === 'group' ? 'text-white bg-slate-800 shadow' : 'text-slate-400 hover:text-white'}`;
-      tabPeriodBtn.className = `px-3 py-1.5 rounded-md font-medium transition ${tabKey === 'period' ? 'text-white bg-slate-800 shadow' : 'text-slate-400 hover:text-white'}`;
+      tabDetailBtn.className = `px-3 py-1.5 rounded-md font-medium transition ${tabKey === 'detail' ? 'text-slate-900 bg-white dark:text-white dark:bg-slate-800 shadow' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`;
+      tabGroupBtn.className = `px-3 py-1.5 rounded-md font-medium transition ${tabKey === 'group' ? 'text-slate-900 bg-white dark:text-white dark:bg-slate-800 shadow' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`;
+      tabPeriodBtn.className = `px-3 py-1.5 rounded-md font-medium transition ${tabKey === 'period' ? 'text-slate-900 bg-white dark:text-white dark:bg-slate-800 shadow' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`;
 
       tabDetailContent.classList.toggle('hidden', tabKey !== 'detail');
       tabGroupContent.classList.toggle('hidden', tabKey !== 'group');
@@ -1042,5 +1056,6 @@
     // Launch Application
     window.addEventListener('DOMContentLoaded', initApp);
   </script>
+
 </body>
 </html>
